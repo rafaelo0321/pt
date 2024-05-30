@@ -11,6 +11,7 @@ import java.util.List;
 public interface IServiciosTickets {
     MostrarTickets crearTickets(CrearTickets crearTickets);
     MostrarTickets eliminarTickets(long id);
+    MostrarTickets borradoLogicoDeTickets(long id);
     MostrarTickets editarTickets(long id, EditarTickets ticket);
     Page<MostrarTickets> mostrarPaginacion(int pagina, int tamanho);
     MostrarTickets recuperarTicketsEspecifico(long id);

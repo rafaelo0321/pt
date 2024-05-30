@@ -97,4 +97,17 @@ public class ControladorTickets {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarTickect(@PathVariable("id") Long id) {
+        try {
+            LOG.info("Se muestra el tickets, de forma exitosa");
+            return new ResponseEntity<>(iServiciosTickets.eliminarTickets(id), HttpStatus.OK);
+        }catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }

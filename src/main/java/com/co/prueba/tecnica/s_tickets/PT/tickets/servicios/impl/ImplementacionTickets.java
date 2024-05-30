@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,8 +41,17 @@ public class ImplementacionTickets implements IServiciosTickets {
      * */
     @Override
     public MostrarTickets crearTickets(CrearTickets crearTickets){
-        Usuario usuario = repositorioUsuario.findById(crearTickets.idUsuario()).orElse(null);
+        Long id = crearTickets.idUsuario();
+        Usuario usuario = null;
+        if (id!= null) {
+            Long numericId = id.longValue();
+            usuario = repositorioUsuario.findById(numericId).orElse(null);
+        } else {
+            throw new IllegalStateException("ID del ticket no puede ser null");
+        }
+
         Tickets nuevoTickets = new Tickets(usuario);
+        ticketsRepositorio.save(nuevoTickets);
         LOG.info("Se creó el tickets correctamente");
         return new MostrarTickets(nuevoTickets);
     }
@@ -52,7 +62,17 @@ public class ImplementacionTickets implements IServiciosTickets {
     public MostrarTickets eliminarTickets(long id){
         Tickets tickets = ticketsRepositorio.findById(id).orElse(null);
         tickets.setEstatus(Estatus.CERRADO);
-        ticketsRepositorio.deleteById(id);
+        tickets.setFechaActualizacion(LocalDateTime.now());
+        ticketsRepositorio.delete(tickets);
+        //ticketsRepositorio.save(tickets);
+        return new MostrarTickets(tickets);
+    }
+    @Override
+    public MostrarTickets borradoLogicoDeTickets(long id){
+        Tickets tickets = ticketsRepositorio.findById(id).orElse(null);
+        tickets.setEstatus(Estatus.CERRADO);
+        tickets.setFechaActualizacion(LocalDateTime.now());
+        ticketsRepositorio.save(tickets);
         return new MostrarTickets(tickets);
     }
 
