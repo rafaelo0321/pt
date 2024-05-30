@@ -1,8 +1,10 @@
 package com.co.prueba.tecnica.s_tickets.PT.usuario.entidades;
 
 import com.co.prueba.tecnica.s_tickets.PT.tickets.entidades.Tickets;
+import com.co.prueba.tecnica.s_tickets.PT.usuario.dto.CrearUsuario;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,7 @@ public class Usuario {
     private Long id;
 
     private String nombre;
+    private LocalDateTime fechaCreacion;
 
     @OneToMany(
             mappedBy = "usuario",
@@ -28,6 +31,11 @@ public class Usuario {
 
     public Usuario(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Usuario(CrearUsuario crearUsuario) {
+        this.nombre = crearUsuario.nombre();
+        this.fechaCreacion = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -48,5 +56,13 @@ public class Usuario {
 
     public void setTickets(List<Tickets> tickets) {
         this.tickets = tickets;
+    }
+
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 }

@@ -1,5 +1,6 @@
 package com.co.prueba.tecnica.s_tickets.PT.tickets.controladores;
 
+import com.co.prueba.tecnica.s_tickets.PT.tickets.dto.CrearTickets;
 import com.co.prueba.tecnica.s_tickets.PT.tickets.dto.EditarTickets;
 import com.co.prueba.tecnica.s_tickets.PT.tickets.dto.MostrarTickets;
 import com.co.prueba.tecnica.s_tickets.PT.tickets.servicios.IServiciosTickets;
@@ -29,18 +30,17 @@ public class ControladorTickets {
     }
     @PostMapping("/crear")
    public ResponseEntity<?> crearTicket(
-           @RequestParam Long id){
+           @RequestBody CrearTickets crearTickets){
 
         try {
-            if(id == null){
+            if(crearTickets == null){
                 Map<String,String> error = new HashMap<>();
                 error.put("Error: ","El id ingresado no es valido");
                 return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
             }
 
-            Usuario usuario = repositorioUsuario.findById(id).orElse(null);
             LOG.info("Se creó el tickets, de forma exitosa");
-            return new ResponseEntity<>(iServiciosTickets.crearTickets(usuario), HttpStatus.CREATED);
+            return new ResponseEntity<>(iServiciosTickets.crearTickets(crearTickets), HttpStatus.CREATED);
         }catch (Exception e) {
             LOG.error(e.getMessage(), e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

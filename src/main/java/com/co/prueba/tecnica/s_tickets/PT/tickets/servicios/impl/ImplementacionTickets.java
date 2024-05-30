@@ -1,5 +1,6 @@
 package com.co.prueba.tecnica.s_tickets.PT.tickets.servicios.impl;
 
+import com.co.prueba.tecnica.s_tickets.PT.tickets.dto.CrearTickets;
 import com.co.prueba.tecnica.s_tickets.PT.tickets.dto.EditarTickets;
 import com.co.prueba.tecnica.s_tickets.PT.tickets.dto.MostrarTickets;
 import com.co.prueba.tecnica.s_tickets.PT.tickets.entidades.Tickets;
@@ -37,7 +38,9 @@ public class ImplementacionTickets implements IServiciosTickets {
     /**
      * Crear
      * */
-    public MostrarTickets crearTickets(Usuario usuario){
+    @Override
+    public MostrarTickets crearTickets(CrearTickets crearTickets){
+        Usuario usuario = repositorioUsuario.findById(crearTickets.idUsuario()).orElse(null);
         Tickets nuevoTickets = new Tickets(usuario);
         LOG.info("Se creó el tickets correctamente");
         return new MostrarTickets(nuevoTickets);
@@ -45,6 +48,7 @@ public class ImplementacionTickets implements IServiciosTickets {
     /**
      * eliminar
      * */
+    @Override
     public MostrarTickets eliminarTickets(long id){
         Tickets tickets = ticketsRepositorio.findById(id).orElse(null);
         tickets.setEstatus(Estatus.CERRADO);
@@ -55,6 +59,7 @@ public class ImplementacionTickets implements IServiciosTickets {
     /**
      * Editar
      * */
+    @Override
     public MostrarTickets editarTickets(long id, EditarTickets ticket){
         Tickets tickets = ticketsRepositorio.findById(id).orElse(null);
 
@@ -80,10 +85,11 @@ public class ImplementacionTickets implements IServiciosTickets {
         return ticketsRepositorio.findAll(pageable).map(MostrarTickets::new);
     }
 
+    @Override
     public List<MostrarTickets> recuperarTodosLosTickets(){
         return ticketsRepositorio.findAll().stream().map(MostrarTickets::new).collect(Collectors.toList());
     }
-
+    @Override
     public MostrarTickets recuperarTicketsEspecifico(long id){
         return ticketsRepositorio.findById(id).map(MostrarTickets::new).orElse(null);
     }
