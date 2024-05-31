@@ -1,4 +1,4 @@
-# Prueba tecnica _ Desarrollador Full Stack Java
+# Prueba tecnica _ Desarrollador Full Stack Java - Clonar la rama RAFA(rafa)
 - Favor arrancar el aplicativo de forma local, debe estar libre el puerto 9000 (Recomindo tener Java 21 o superior y el IDE IntelliJ IDEA)
 -   ![Paso a paso](https://github.com/rafaelo0321/pt/assets/74280402/e7683269-7b39-4a7a-991b-f164721cd46c)
 - Copiar la siguiente url: http://localhost:9000/swagger-ui/index.html
