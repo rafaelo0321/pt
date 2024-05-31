@@ -24,9 +24,14 @@ public class ControladorUsuario {
     public ResponseEntity<?> crearusuarios(@RequestBody CrearUsuario usuario) {
 
             try {
+                Usuario u = serviciosUsuario.traerusuario(usuario.nombre());
                 if (usuario.nombre().isEmpty()) {
                     LOG.warn("El nombre se encuentra vacio");
-                    return new ResponseEntity<>("Favor ingresar un nombre, este dato no puede estar vacion", HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>("Favor ingresar un nombre, este dato no puede estar vacio", HttpStatus.BAD_REQUEST);
+                }if (usuario.nombre().equals(u.getNombre())){
+                    LOG.warn("El nombre se encuentra repetido");
+                    return new ResponseEntity<>("Favor ingresar un nombre, este dato no puede estar repetido", HttpStatus.BAD_REQUEST);
+
                 }
                 LOG.info("Se creó el usuario, de forma exitosa");
                 return new ResponseEntity<>(serviciosUsuario.crearUsuario(usuario), HttpStatus.CREATED);
@@ -34,6 +39,19 @@ public class ControladorUsuario {
                 LOG.error(e.getMessage(), e);
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
+
+    }
+    @GetMapping("/mostrar/todos")
+    public ResponseEntity<?> mostrarTodosLosUsuarios(@RequestBody CrearUsuario usuario) {
+
+        try {
+
+            LOG.info("Se muestra una lista de usuarios, de forma exitosa");
+            return new ResponseEntity<>(serviciosUsuario.crearUsuario(usuario), HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            LOG.error(e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
     }
 }

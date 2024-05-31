@@ -7,6 +7,9 @@ import com.co.prueba.tecnica.s_tickets.PT.usuario.repositorio.RepositorioUsuario
 import com.co.prueba.tecnica.s_tickets.PT.usuario.servicios.IServiciosUsuario;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ImplementacionUsuario implements IServiciosUsuario {
 
@@ -25,5 +28,13 @@ public class ImplementacionUsuario implements IServiciosUsuario {
             Usuario usuario = new Usuario(crearUsuario);
             setRepositorioUsuario(usuario);
         return new MostrarUsuario(usuario);
+    }
+    @Override
+    public List<MostrarUsuario> mostrarUsuarios() {
+        return repositorioUsuario.findAll().stream().map(MostrarUsuario::new).collect(Collectors.toList());
+    }
+    @Override
+    public Usuario traerusuario(String nombre) {
+        return repositorioUsuario.findByNombre(nombre);
     }
 }

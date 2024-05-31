@@ -54,7 +54,7 @@ public class ControladorTickets {
                error.put("Error: ","El id ingresado no es valido");
                return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
            }
-           LOG.info("Se creó el tickets, de forma exitosa");
+           LOG.info("Se editó el tickets, de forma exitosa");
            return new ResponseEntity<>(iServiciosTickets.editarTickets(id, ticket), HttpStatus.OK);
        }catch (Exception e) {
            LOG.error(e.getMessage(), e);
@@ -101,7 +101,7 @@ public class ControladorTickets {
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarTickect(@PathVariable("id") Long id) {
         try {
-            LOG.info("Se muestra el tickets, de forma exitosa");
+            LOG.info("Se eliminó el tickets, de forma exitosa");
             return new ResponseEntity<>(iServiciosTickets.eliminarTickets(id), HttpStatus.OK);
         }catch (Exception e) {
             LOG.error(e.getMessage(), e);

@@ -83,16 +83,19 @@ public class ImplementacionTickets implements IServiciosTickets {
     public MostrarTickets editarTickets(long id, EditarTickets ticket){
         Tickets tickets = ticketsRepositorio.findById(id).orElse(null);
 
-        if (tickets.getId() != null){
-            Usuario usuario = repositorioUsuario.findById(tickets.getId()).orElse(null);
+        if (ticket.usuario() != null){
+            Usuario usuario = repositorioUsuario.findById(ticket.usuario()).orElse(null);
             tickets.setUsuario(usuario);
         }
-        if (tickets.getEstatus() != null){
-            tickets.setEstatus(tickets.getEstatus());
+        if (ticket.estatus() != null){
+            tickets.setEstatus(ticket.estatus());
         }
+        tickets.setFechaActualizacion(LocalDateTime.now());
         ticketsRepositorio.save(tickets);
         return new MostrarTickets(tickets);
     }
+
+
 
 
     /**
