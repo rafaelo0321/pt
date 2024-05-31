@@ -10,6 +10,7 @@ import com.co.prueba.tecnica.s_tickets.PT.tickets.servicios.IServiciosTickets;
 import com.co.prueba.tecnica.s_tickets.PT.usuario.entidades.Usuario;
 import com.co.prueba.tecnica.s_tickets.PT.usuario.repositorio.RepositorioUsuario;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
@@ -60,11 +61,18 @@ public class ImplementacionTickets implements IServiciosTickets {
      * */
     @Override
     public MostrarTickets eliminarTickets(long id){
-        Tickets tickets = ticketsRepositorio.findById(id).orElse(null);
+
+        Tickets tickets = ticketsRepositorio.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Ticket no encontrado con ID: " + id));
+
         tickets.setEstatus(Estatus.CERRADO);
         tickets.setFechaActualizacion(LocalDateTime.now());
-        ticketsRepositorio.delete(tickets);
-        //ticketsRepositorio.save(tickets);
+
+        //ticketsRepositorio.save(tickets); // Usamos save en lugar de delete para actualizar el estado
+
+        // Si realmente deseas eliminar el registro, puedes usar delete:
+        ticketsRepositorio.deleteById(id);
+
         return new MostrarTickets(tickets);
     }
     @Override
@@ -94,9 +102,6 @@ public class ImplementacionTickets implements IServiciosTickets {
         ticketsRepositorio.save(tickets);
         return new MostrarTickets(tickets);
     }
-
-
-
 
     /**
      * Paginar

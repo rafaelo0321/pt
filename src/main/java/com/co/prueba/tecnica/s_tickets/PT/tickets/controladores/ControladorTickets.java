@@ -6,6 +6,8 @@ import com.co.prueba.tecnica.s_tickets.PT.tickets.dto.MostrarTickets;
 import com.co.prueba.tecnica.s_tickets.PT.tickets.servicios.IServiciosTickets;
 import com.co.prueba.tecnica.s_tickets.PT.usuario.entidades.Usuario;
 import com.co.prueba.tecnica.s_tickets.PT.usuario.repositorio.RepositorioUsuario;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -99,10 +101,11 @@ public class ControladorTickets {
     }
 
     @DeleteMapping("/eliminar/{id}")
+    @Transactional
     public ResponseEntity<?> eliminarTickect(@PathVariable("id") Long id) {
         try {
             LOG.info("Se eliminó el tickets, de forma exitosa");
-            return new ResponseEntity<>(iServiciosTickets.eliminarTickets(id), HttpStatus.OK);
+            return new ResponseEntity<>(iServiciosTickets.eliminarTickets(id), HttpStatus.NO_CONTENT);
         }catch (Exception e) {
             LOG.error(e.getMessage(), e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
